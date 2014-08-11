@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+     <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}todc-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- TODC Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}todc-bootstrap/css/todc-bootstrap.min.css" rel="stylesheet">
+
+     <!-- dashboard core CSS -->
+    <link href="{{ STATIC_URL }}todc-bootstrap/css/dashboard.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">eForm请假审批系统</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">设置</a></li>
+            <li><a href="#">帮助</a></li>
+            <li><a href="#">退出</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="搜索...">
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">所有请假单</a></li>
+            <li><a href="#">报表</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        {% block content %}
+          <h2 class="sub-header">所有请假单
+              <br><br>
+              <a class="btn btn-primary" href="create" role="button">创建</a>
+
+          </h2>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                  <td>序号</td>
+                  <td>单号</td>
+                  <td>申请人</td>
+                  <td>开始日期</td>
+                  <td>结束日期</td>
+                  <td>审批状态</td>
+                  <td>操作</td>
+              </tr>
+              </thead>
+              <tbody>
+              {% for request in request_form_list %}
+              <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{request.request_no}}</td>
+                  <td>{{request.name}}</td>
+                  <td>{{request.date_from}}</td>
+                  <td>{{request.date_to}}</td>
+                  <td>pending...</td>
+                  <td>
+                      <a type="button" href="{{request.id}}" class="btn btn-xs btn-info">Info</a>
+                      <a type="button" href="delete/{{request.id}}" class="btn btn-xs btn-info">Del</a>
+                      <a type="button" href="update/{{request.id}}" class="btn btn-xs btn-info">Modify</a>
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+              <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-xs btn-success">&lt;</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-xs btn-success">&gt;</a>
+                    {% endif %}
+                </span>
+              </div>
+          </div>
+        {% endblock %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ STATIC_URL }}todc-bootstrap/js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/docs.min.js"></script>
+
+
+</body>
+
+</html>

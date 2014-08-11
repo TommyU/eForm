@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content%}
+<a class="btn btn-primary" href="../../requests/" role="button">&lt;&lt;返回</a><hr>
+        {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+        {% endif %}
+        <form action="" method="post">
+
+        <table>
+            {{ form.as_p }}
+        </table>
+        <!--
+            <table class="table">
+                <tr><td width="120px"><b>request no</b></td><td>{{form.request_no}}</td></tr>
+                <tr><td><b>name</b></td><td>{{form.name}}</td></tr>
+                <tr><td><b>staff id</b></td><td>{{form.staff_id}}</td></tr>
+                <tr><td><b>supervisor</b></td><td>{{form.supervisor}}</td></tr>
+                <tr><td><b>leave type</b></td><td>{{form.leave_type}}</td></tr>
+                <tr><td><b>date from</b></td><td>{{form.date_from}}</td></tr>
+                <tr><td><b>date from am</b></td><td>{{form.date_from_am}}</td></tr>
+                <tr><td><b>date from pm</b></td><td>{{form.date_from_pm}}</td></tr>
+                <tr><td><b>date to</b></td><td>{{form.date_to}}</td></tr>
+                <tr><td><b>date to am</b></td><td>{{form.date_to_am}}</td></tr>
+                <tr><td><b>date to pm</b></td><td>{{form.date_to_pm}}</td></tr>
+                <tr><td><b>attachment</b></td><td>{{form.attachment}}</td></tr>
+                <tr><td><b>remark</b></td><td>{{form.remark}}</td></tr>
+            </table>-->
+        {% csrf_token %}
+        <input type="submit" value="Submit" class="btn btn-sm btn-danger">
+    </form>
+
+{%endblock%}

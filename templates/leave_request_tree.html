@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>leave request</title>
+    <style type="text/css">
+        table,tr{border-left:solid 1px #112233;border-top:solid 1px #112233;}
+        td{border-right:solid 1px #112233; border-bottom:solid 1px #112233;}
+        .headerRow{font-weight:bold}
+    </style>
+</head>
+<body>
+    <h1>leave request</h1>
+
+    <form action="" method="get">
+        <table>
+            <tr class="headerRow"><td>请假单号</td><td>名字</td><td>类别</td><td>操作</td></tr>
+            {% for form in forms %}
+            <tr>
+                <td>{{form.request_no}}</td>
+                <td>{{form.name}}</td>
+                <td>{{form.leave_type}}</td>
+                <td>update delete</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% csrf_token %}
+
+    </form>
+    <form action="" method="post">
+        <input type="submit" value="New">
+        {% csrf_token %}
+    </form>
+
+    <form id = "update_form" method="post">
+
+    </form>
+</body>
+</html>
