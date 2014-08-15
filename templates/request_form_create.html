@@ -28,7 +28,12 @@
                 <tr><td><b>remark</b></td><td>{{form.remark}}</td></tr>
             </table>-->
         {% csrf_token %}
-        <input type="submit" value="Submit" class="btn btn-sm btn-danger">
+        <input type="submit" class="btn btn-sm btn-danger">
     </form>
+<script type="text/javascript">
+    $(function(){
+        $('.timepicker').datepicker();
+    });
 
+</script>
 {%endblock%}

@@ -102,7 +102,6 @@ class leaveRequestDeleteView(DeleteView):
 #    template_name ='leave_request_form2.html'#template中需要用object引用模型
 #    model = request_form
 #    slug_field = 'request_no'
-
 #===============================上面在玩，下面玩真的===================================
 class requestList(ListView):
     model = request_form
@@ -114,12 +113,14 @@ class requestDetail(DeleteView):
     template_name = 'request_form_detail.html'
 
     def get_context_data(self, **kwargs):
-        return super(requestDetail,self).get_context_data(kwargs)
+        return super(requestDetail,self).get_context_data()
 
 class requestCreate(CreateView):
     model = request_form
+    form_class = request_formForm
     template_name = 'request_form_create.html'
     success_url = '/requests'
+    initial = {'date_from':datetime.date.today() + datetime.timedelta(3)}
 
 class requestDelete(DeleteView):
     model = request_form
@@ -129,5 +130,6 @@ class requestDelete(DeleteView):
 
 class requestUpdate(UpdateView):
     model = request_form
+    form_class = request_formForm
     template_name = 'request_form_create.html'
     success_url = '/requests'

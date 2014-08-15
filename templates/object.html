@@ -1,0 +1,18 @@
+{% load i18n %}
+<a class="btn btn-primary" href="../../requests/" role="button">&lt;&lt;{% trans "return" %}</a><hr>
+        <table class="span">
+            <tr><td width="120px"><b>{% trans "id"%}</b></td><td>{{object.id}}</td></tr>
+            <tr><td><b>{% trans "request no"%}</b></td><td>{{object.request_no}}</td></tr>
+            <tr><td><b>{% trans "name"%}</b></td><td>{{object.name}}</td></tr>
+            <tr><td><b>{% trans "applier"%}</b></td><td>{{object.staff_id}}</td></tr>
+            <tr><td><b>{% trans "supervisor"%}</b></td><td>{{object.supervisor}}</td></tr>
+            <tr><td><b>{% trans "leave type"%}</b></td><td>{{object.leave_type}}</td></tr>
+            <tr><td><b>{% trans "date from"%}</b></td><td>{{object.date_from}}</td></tr>
+            <tr><td><b>{% trans "from am"%}</b></td><td>{{object.date_from_am}}</td></tr>
+            <tr><td><b>{% trans "from pm"%}</b></td><td>{{object.date_from_pm}}</td></tr>
+            <tr><td><b>{% trans "date to"%}</b></td><td>{{object.date_to}}</td></tr>
+            <tr><td><b>{% trans "to am"%}</b></td><td>{{object.date_to_am}}</td></tr>
+            <tr><td><b>{% trans "to pm"%}</b></td><td>{{object.date_to_pm}}</td></tr>
+            <tr><td><b>{% trans "attachment"%}</b></td><td>{{object.attachment}}</td></tr>
+            <tr><td><b>{% trans "remark"%}</b></td><td>{{object.remark}}</td></tr>
+        </table>

@@ -43,25 +43,25 @@ class supervisor_list(models.Model):
 
     def __unicode__(self):
         return u'[%s] %s' % (self.supervisor.sid, self.supervisor.name)
-
+from django.utils.translation import ugettext_lazy as _
 class request_form(models.Model):
-    request_no = models.CharField(max_length=20)
-    name = models.ForeignKey(staff)
-    staff_id = models.CharField(max_length=20)
-    supervisor = models.ForeignKey(supervisor_list)
+    request_no = models.CharField(max_length=20, verbose_name=_("request no"))
+    name = models.ForeignKey(staff, verbose_name=_("name"))
+    staff_id = models.CharField(max_length=20, verbose_name=_("applier"))
+    supervisor = models.ForeignKey(supervisor_list, verbose_name=_("supervisor"))
     LEAVE_TYPE_CHOICES = (
         ('Sick leave','Sick leave'),
         ('Marrage leave','Marrage leave')
     )
-    leave_type = models.CharField(max_length=32,choices=LEAVE_TYPE_CHOICES)
-    date_from = models.DateField(default=datetime.date.today() + datetime.timedelta(3))
-    date_from_am = models.BooleanField(default=True)
-    date_from_pm = models.BooleanField(default=False)
-    date_to = models.DateField(default=datetime.date.today() + datetime.timedelta(3))
-    date_to_am = models.BooleanField(default=False)
-    date_to_pm = models.BooleanField(default=True)
-    attachment = models.FileField(blank=True,upload_to='generate_filename',null=True)
-    remark = models.CharField(max_length=256, null=True, blank=True)
+    leave_type = models.CharField(max_length=32,choices=LEAVE_TYPE_CHOICES, verbose_name=_("leave type"))
+    date_from = models.DateField(default=datetime.date.today() + datetime.timedelta(3), verbose_name=_("date from"))
+    date_from_am = models.BooleanField(default=True, verbose_name=_("from am"))
+    date_from_pm = models.BooleanField(default=False, verbose_name=_("from pm"))
+    date_to = models.DateField(default=datetime.date.today() + datetime.timedelta(3), verbose_name=_("date to"))
+    date_to_am = models.BooleanField(default=False, verbose_name=_("to am"))
+    date_to_pm = models.BooleanField(default=True, verbose_name=_("to pm"))
+    attachment = models.FileField(blank=True,upload_to='generate_filename',null=True, verbose_name=_("attachment"))
+    remark = models.CharField(max_length=256, null=True, blank=True, verbose_name=_("remark"))
 
     def __str__(self):
         return "[%s] %s" % (self.leave_type, self.name.name)

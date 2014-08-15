@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    {% load i18n %}
 
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -26,16 +27,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">eForm请假审批系统</a>
+          <a class="navbar-brand" href="#">{% trans "leaving request eForm sys"%}</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">设置</a></li>
-            <li><a href="#">帮助</a></li>
-            <li><a href="#">退出</a></li>
+            <li><a href="#">{% trans "settings" %}</a></li>
+            <li><a href="#">{% trans "help" %}</a></li>
+            <li><a href="#">{% trans "quit" %}</a></li>
           </ul>
           <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="搜索...">
+            <input type="text" class="form-control" placeholder="{%trans 'search'%}...">
           </form>
         </div>
       </div>
@@ -46,16 +47,16 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">所有请假单</a></li>
-            <li><a href="#">报表</a></li>
+            <li class="active"><a href="#">{% trans "all requests" %}</a></li>
+            <li><a href="#">{% trans "report" %}</a></li>
           </ul>
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         {% block content %}
-          <h2 class="sub-header">所有请假单
+          <h2 class="sub-header">{% trans "all leaving requests" %}
               <br><br>
-              <a class="btn btn-primary" href="create" role="button">创建</a>
+              <a class="btn btn-primary" href="create" role="button">{% trans "create" %}</a>
 
           </h2>
 
@@ -63,13 +64,13 @@
             <table class="table table-striped">
               <thead>
               <tr>
-                  <td>序号</td>
-                  <td>单号</td>
-                  <td>申请人</td>
-                  <td>开始日期</td>
-                  <td>结束日期</td>
-                  <td>审批状态</td>
-                  <td>操作</td>
+                  <td>{% trans "no" %}</td>
+                  <td>{% trans "request no" %}</td>
+                  <td>{% trans "applier" %}</td>
+                  <td>{% trans "date from" %}</td>
+                  <td>{% trans "date to" %}</td>
+                  <td>{% trans "state" %}</td>
+                  <td>{% trans "operation" %}</td>
               </tr>
               </thead>
               <tbody>
@@ -82,9 +83,9 @@
                   <td>{{request.date_to}}</td>
                   <td>pending...</td>
                   <td>
-                      <a type="button" href="{{request.id}}" class="btn btn-xs btn-info">Info</a>
-                      <a type="button" href="delete/{{request.id}}" class="btn btn-xs btn-info">Del</a>
-                      <a type="button" href="update/{{request.id}}" class="btn btn-xs btn-info">Modify</a>
+                      <a type="button" href="{{request.id}}" class="btn btn-xs btn-info">{% trans "Info" %}</a>
+                      <a type="button" href="delete/{{request.id}}" class="btn btn-xs btn-info">{% trans "Del" %}</a>
+                      <a type="button" href="update/{{request.id}}" class="btn btn-xs btn-info">{% trans "Modify" %}</a>
                   </td>
               </tr>
               {% endfor %}
@@ -113,11 +114,14 @@
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ STATIC_URL }}todc-bootstrap/js/jquery.js"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}js/docs.min.js"></script>
 
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--
+    <script src="{{ STATIC_URL }}todc-bootstrap/js/jquery.js"></script>
+
+    <script src="{{ STATIC_URL }}todc-bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}todc-bootstrap/js/docs.min.js"></script>
+-->
 
 </body>
 

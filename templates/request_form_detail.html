@@ -1,20 +1,5 @@
 {% extends "base.html" %}
 {% block content%}
-<a class="btn btn-primary" href="../../requests/" role="button">&lt;&lt;返回</a><hr>
-<table class="span">
-    <tr><td width="120px"><b>id</b></td><td>{{object.id}}</td></tr>
-    <tr><td><b>request no</b></td><td>{{object.request_no}}</td></tr>
-    <tr><td><b>name</b></td><td>{{object.name}}</td></tr>
-    <tr><td><b>staff id</b></td><td>{{object.staff_id}}</td></tr>
-    <tr><td><b>supervisor</b></td><td>{{object.supervisor}}</td></tr>
-    <tr><td><b>leave type</b></td><td>{{object.leave_type}}</td></tr>
-    <tr><td><b>date from</b></td><td>{{object.date_from}}</td></tr>
-    <tr><td><b>date from am</b></td><td>{{object.date_from_am}}</td></tr>
-    <tr><td><b>date from pm</b></td><td>{{object.date_from_pm}}</td></tr>
-    <tr><td><b>date to</b></td><td>{{object.date_to}}</td></tr>
-    <tr><td><b>date to am</b></td><td>{{object.date_to_am}}</td></tr>
-    <tr><td><b>date to pm</b></td><td>{{object.date_to_pm}}</td></tr>
-    <tr><td><b>attachment</b></td><td>{{object.attachment}}</td></tr>
-    <tr><td><b>remark</b></td><td>{{object.remark}}</td></tr>
-</table>
+
+{% include "object.html" %}
 {%endblock%}

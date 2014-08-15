@@ -18,5 +18,14 @@
         {% csrf_token %}
         <input type="submit" value="Submit">
     </form>
+    <script type="text/javascript" src="{{STATIC_URL}}todc-bootstrap/js/jquery.js"/>
+<script type="text/javascript">
+    $(function(){
+        $('.timepicker').datepicker();
+    });
+
+</script>
 </body>
+
 </html>
+
