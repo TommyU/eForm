@@ -8,5 +8,6 @@ urlpatterns = patterns('',
     url(r'^create/$',requestCreate.as_view()),
     url(r'^delete/(?P<pk>[\d]+)$',requestDelete.as_view()),
     url(r'^update/(?P<pk>[\d]+)$',requestUpdate.as_view()),
+    url(r'^(?P<val>[\w]+)/$',requestList.as_view()),
 
 )

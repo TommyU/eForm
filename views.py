@@ -103,10 +103,30 @@ class leaveRequestDeleteView(DeleteView):
 #    model = request_form
 #    slug_field = 'request_no'
 #===============================上面在玩，下面玩真的===================================
+from django.db.models import Q
 class requestList(ListView):
     model = request_form
     template_name = 'request_form_list.html'
     paginate_by =10
+
+    def get_queryset(self):
+        search_val = self.request.GET.get('val', False) if self.request.GET else False
+        if search_val:
+            return request_form.objects.filter(
+                Q(request_no__icontains = search_val)|
+                Q(name__name__icontains=search_val)
+            )
+        else:
+            return request_form.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(requestList, self).get_context_data(**kwargs)
+        context.update(sval=self.request.GET.get('val', False)
+        if self.request.GET
+        else False
+        )
+        return context
+
 
 class requestDetail(DeleteView):
     model = request_form

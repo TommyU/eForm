@@ -12,12 +12,15 @@
 
      <!-- dashboard core CSS -->
     <link href="{{ STATIC_URL }}todc-bootstrap/css/dashboard.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}todc-bootstrap/js/jquery.js"></script>
+    <link href="{{ STATIC_URL }}jQueryUI/jquery-ui.min.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js"></script>
 
 </head>
 
 <body>
     {% load i18n %}
-
+    {% load filters_extras %}
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -35,9 +38,11 @@
             <li><a href="#">{% trans "help" %}</a></li>
             <li><a href="#">{% trans "quit" %}</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="{%trans 'search'%}...">
+          <form class="navbar-form navbar-right" action="/requests/search/"  method="get">
+            <input type="text" class="form-control" value="{{sval}}"
+                   placeholder="{%trans 'search'%}..." name="val">
           </form>
+
         </div>
       </div>
     </div>
@@ -47,7 +52,7 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">{% trans "all requests" %}</a></li>
+            <li class="active"><a href="/requests/">{% trans "all requests" %}</a></li>
             <li><a href="#">{% trans "report" %}</a></li>
           </ul>
         </div>
@@ -56,7 +61,7 @@
         {% block content %}
           <h2 class="sub-header">{% trans "all leaving requests" %}
               <br><br>
-              <a class="btn btn-primary" href="create" role="button">{% trans "create" %}</a>
+              <a class="btn btn-primary" href="/requests/create/" role="button">{% trans "create" %}</a>
 
           </h2>
 
@@ -74,21 +79,25 @@
               </tr>
               </thead>
               <tbody>
-              {% for request in request_form_list %}
-              <tr>
-                  <td>{{forloop.counter}}</td>
-                  <td>{{request.request_no}}</td>
-                  <td>{{request.name}}</td>
-                  <td>{{request.date_from}}</td>
-                  <td>{{request.date_to}}</td>
-                  <td>pending...</td>
-                  <td>
-                      <a type="button" href="{{request.id}}" class="btn btn-xs btn-info">{% trans "Info" %}</a>
-                      <a type="button" href="delete/{{request.id}}" class="btn btn-xs btn-info">{% trans "Del" %}</a>
-                      <a type="button" href="update/{{request.id}}" class="btn btn-xs btn-info">{% trans "Modify" %}</a>
-                  </td>
-              </tr>
-              {% endfor %}
+              {% if request_form_list %}
+                  {% for request in request_form_list %}
+                  <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{request.request_no}}</td>
+                      <td>{{request.name}}</td>
+                      <td>{{request.date_from}}</td>
+                      <td>{{request.date_to}}</td>
+                      <td>pending...</td>
+                      <td>
+                          <a type="button" href="/requests/{{request.id}}" class="btn btn-xs btn-info">{% trans "Info" %}</a>
+                          <a type="button" href="/requests/delete/{{request.id}}" class="btn btn-xs btn-info">{% trans "Del" %}</a>
+                          <a type="button" href="/requests/update/{{request.id}}" class="btn btn-xs btn-info">{% trans "Modify" %}</a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              {% else %}
+                  <tr><td colspan="7">{% trans "No record found!" %}</td> </tr>
+              {% endif %}
               </tbody>
             </table>
               <div class="pagination">
@@ -112,12 +121,15 @@
       </div>
     </div>
 
+
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
 
     <!-- Placed at the end of the document so the pages load faster -->
     <!--
-    <script src="{{ STATIC_URL }}todc-bootstrap/js/jquery.js"></script>
+
 
     <script src="{{ STATIC_URL }}todc-bootstrap/js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}todc-bootstrap/js/docs.min.js"></script>
