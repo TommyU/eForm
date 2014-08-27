@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.forms import ModelForm,Form
+from django.forms.models import inlineformset_factory
 from django import forms
 from models import  *
 
@@ -9,4 +10,5 @@ class request_formForm(ModelForm):
     class Meta:
         model = request_form
 
+saturday_off_requestFormSet =inlineformset_factory(request_form,saturday_off_request,extra=1)
 

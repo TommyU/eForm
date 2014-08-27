@@ -142,6 +142,25 @@ class requestCreate(CreateView):
     success_url = '/requests'
     initial = {'date_from':datetime.date.today() + datetime.timedelta(3)}
 
+    def get_context_data(self, **kwargs):
+        context = super(requestCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context.update(saturdays = saturday_off_requestFormSet(self.request.POST))
+        else:
+            context.update(saturdays = saturday_off_requestFormSet())
+        return context
+
+    def form_valid(self, form):
+        #super(requestCreate,self).form_valid(form)
+        saturdays = saturday_off_requestFormSet(self.request.POST)
+        if saturdays.is_valid():
+            self.object = form.save()
+            saturdays.instance= self.object
+            saturdays.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data())
+
 class requestDelete(DeleteView):
     model = request_form
     template_name = 'request_form_delete.html'
@@ -153,3 +172,22 @@ class requestUpdate(UpdateView):
     form_class = request_formForm
     template_name = 'request_form_create.html'
     success_url = '/requests'
+
+    def get_context_data(self, **kwargs):
+        context = super(requestUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context.update(saturdays = saturday_off_requestFormSet(self.request.POST))
+        else:
+            context.update(saturdays = saturday_off_requestFormSet(instance=request_form.objects.get(pk = self.kwargs.get('pk',False))))
+        return context
+
+    def form_valid(self, form):
+        #super(requestCreate,self).form_valid(form)
+        saturdays = saturday_off_requestFormSet(self.request.POST,instance = self.object)
+        if saturdays.is_valid():
+            self.object = form.save()
+            saturdays.instance= self.object
+            saturdays.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data())

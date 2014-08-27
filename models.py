@@ -77,5 +77,11 @@ class acts(models.Model):
     acted = models.BooleanField(default=False)
     report = models.ForeignKey(request_form)
     memo = models.CharField(max_length=512,null=True, blank=True)
+
+class saturday_off_request(models.Model):
+    request = models.ForeignKey(request_form)
+    is_off = models.BooleanField(default=False,verbose_name=_('off'))
+    day = models.DateField(_('day'))
+
 #class leave_request(models.Model):
 

@@ -5,7 +5,7 @@
     <title></title>
 
      <!-- Bootstrap core CSS -->
-    <link href="{{ STATIC_URL }}todc-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}todc-bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- TODC Bootstrap core CSS -->
     <link href="{{ STATIC_URL }}todc-bootstrap/css/todc-bootstrap.min.css" rel="stylesheet">
@@ -82,7 +82,7 @@
               {% if request_form_list %}
                   {% for request in request_form_list %}
                   <tr>
-                      <td>{{forloop.counter}}</td>
+                      <td><!--{{forloop.counter}}-->{{request.id}}</td>
                       <td>{{request.request_no}}</td>
                       <td>{{request.name}}</td>
                       <td>{{request.date_from}}</td>
@@ -128,12 +128,12 @@
     ================================================== -->
 
     <!-- Placed at the end of the document so the pages load faster -->
-    <!--
+
 
 
     <script src="{{ STATIC_URL }}todc-bootstrap/js/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}todc-bootstrap/js/docs.min.js"></script>
--->
+
+
 
 </body>
 

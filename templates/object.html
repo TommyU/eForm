@@ -16,3 +16,6 @@
             <tr><td><b>{% trans "attachment"%}</b></td><td>{{object.attachment}}</td></tr>
             <tr><td><b>{% trans "remark"%}</b></td><td>{{object.remark}}</td></tr>
         </table>
+{% for item in object.saturday_off_request_set.all %}
+<ul>{{item.is_off}} - {{item.day}}</ul>
+{% endfor %}

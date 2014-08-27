@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content%}
-
+{% load i18n %}
 <script src="{{ STATIC_URL }}jWizard/jquery.jWizard.js"></script>
 
 <link href="{{ STATIC_URL }}jWizard/jquery.jWizard.css" rel="stylesheet"/>
@@ -14,17 +14,44 @@
 
         <form action="" method="post" id="wizard">
 
-            <div style="display: block; height:500px;" title="step 1">
+            <div style="display: block; height:500px;" title="{% trans 'Leave Request' %}">
                 <table>
-                    {{ form.as_p }}
+
+                    <p>{{form.request_no.label_tag}}{{form.request_no}}{{form.request_no.errors}}</p>
+                    <p>{{form.name.label_tag}}{{form.name}}{{form.name.errors}}</p>
+                    <p>{{form.staff_id.label_tag}}{{form.staff_id}}{{form.staff_id.errors}}</p>
+                    <p>{{form.supervisor.label_tag}}{{form.supervisor}}{{form.supervisor.errors}}</p>
+                    <p>{{form.leave_type.label_tag}}{{form.leave_type}}{{form.leave_type.errors}}</p>
+                    <p>{{form.date_from.label_tag}}{{form.date_from}}{{form.date_from.errors}}</p>
+                    <p>{{form.date_from_am.label_tag}}{{form.date_from_am}}{{form.date_from_am.errors}}</p>
+                    <p>{{form.date_from_pm.label_tag}}{{form.date_from_pm}}{{form.date_from_pm.errors}}</p>
+                    <p>{{form.date_to.label_tag}}{{form.date_to}}{{form.date_to.errors}}</p>
+                    <p>{{form.date_to_am.label_tag}}{{form.date_to_am}}{{form.date_to_am.errors}}</p>
+                    <p>{{form.date_to_pm.label_tag}}{{form.date_to_pm}}{{form.date_to_pm.errors}}</p>
+                    <p>{{form.attachment.label_tag}}{{form.attachment}}{{form.attachment.errors}}</p>
+                    <p>{{form.remark.label_tag}}{{form.remark}}{{form.remark.errors}}</p>
                 </table>
+                 {% csrf_token %}
             </div>
 
 
-            <div style="display: none; height:500px;" title="step 2">
-                <legend>Step 2</legend>
-                <p>Step 2</p>
-                {% csrf_token %}
+            <div style="display: none; height:500px;float:left;" title="{% trans 'Saturday Off' %}">
+            {{ saturdays.management_form }}
+                {% for sat in saturdays %}
+                <div class="item">
+                    <p>{{sat.id}}</p>
+                    <p style="display:none;float:left;" class="delete_mark">{{sat.DELETE}}</p>
+                    <p style="display:block;float:left;">{{sat.is_off}}</p>
+                    <p style="display:block;float:left;">&nbsp;{{sat.day}}</p>
+                </div>
+                {%endfor%}
+            </div>
+
+            <div style="display: none; height:500px;" title="{% trans 'Acting' %}">
+
+            </div>
+
+            <div style="display: none; height:500px;" title="{% trans 'Confirmation' %}">
 
             </div>
 
@@ -34,9 +61,125 @@
 
 
 <script type="text/javascript">
+    function prepare_for_update()
+    {
+        $(".item").each(function(){
+           row = this;
+           if($("[id$='-id']",$(row)).val()=="" || $("[id$='-id']",$(row)).val()==undefined)//newly added
+           {
+             $(row).remove();
+           }else//existing records
+           {
+             $(".delete_mark",$(row)).children().attr("checked","checked");
+             $(row).hide();
+           }
+        });
+
+        // Relabel or rename all the relevant bits
+        $(".item").each(function(index,row){
+            $(row).children().children().each(function () {
+                    if($(this).get(0).tagName=="INPUT") updateElementIndex(this, "saturday_off_request_set", index);
+            });
+        });
+
+        $('#id_saturday_off_request_set-TOTAL_FORMS').val($(".item").length)
+    }
+
+    function init_sats()
+    {
+       var from = $("#id_date_from").val().split(/[-/.]{1}/g);
+       var to = $("#id_date_to").val().split(/[-/.]{1}/g);
+       if(from !="" && to!="")
+       {
+          $(".item:first").show();//it may hide(hidden when creating,not so when updating)
+          prepare_for_update();
+          var dFrom = new Date(from);
+          var dTo = new Date(to);
+          var count=$(".item").length;
+          while(dFrom<dTo)
+          {
+             dFrom = new Date(dFrom.valueOf() +1 * 24 * 60 * 60 * 1000);
+             if(dFrom.getUTCDay()==5)//saturday
+             {
+               if(count!=0)
+               {
+                 addForm("saturday_off_request_set");
+               }
+               $("#id_saturday_off_request_set-"+count+"-day")
+               .val(dFrom.getFullYear()+"-"+(dFrom.getMonth()+1)+"-"+dFrom.getDate())
+               .css("border-width","0px")
+               .css("background-color","transparent")
+               .attr("readonly","readonly");//toLocaleDateString
+                count=count+1;
+             }
+          }
+
+       }
+    }
+
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+        var replacement = prefix + '-' + ndx + '-';
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+
+    function deleteForm(btn, prefix) {
+        $(".delete_mark",$(btn).parent().parent()).children().attr("checked","checked")
+        $(btn).parents('.item').hide();
+        return false;
+    }
+
+    function addForm(prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        // You can only submit a maximum of 100 todo items
+        if (formCount < 100) {
+            // Clone a form (without event handlers) from the first form
+            var row = $(".item:first").clone(false).get(0);
+            // Insert it after the last form
+            $(row).removeAttr('id').insertAfter(".item:last").show();
+
+            // Remove the bits we don't want in the new row/form
+            // e.g. error messages
+            $(".errorlist", row).remove();
+            $(row).children().removeClass("error");
+
+            // Relabel or rename all the relevant bits
+            $(row).children().children().each(function () {
+                if($(this).get(0).tagName=="INPUT")
+                    updateElementIndex(this, prefix, formCount);
+                if ($(this).attr('type') == 'text' || $(this).attr('type') == 'hidden')
+                {
+                    $(this).val("");
+                }else if($(this).attr('type') == 'checkbox')
+                {
+                    $(this).attr("checked",false);
+                }
+            });
+
+            // Add an event handler for the delete item/form link
+            $(row).find("[name=delete]").click(function () {
+                return deleteForm(this, prefix);
+            });
+            // Update the total form count
+            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+        } // End if
+        else {
+            alert("Sorry, you can only enter a maximum of 100 items.");
+        }
+        return false;
+    }
+
     $(function(){
         //alert("yes");
         $("#wizard").jWizard();
+        $("#id_date_from,#id_date_to").bind("change",init_sats);
+        if($("[id$=day]",$(".item:last")).val()=="")//hide null data row
+            $(".item:last").hide();
+        $("[id$='-day']").each(function(){$(this).css("border-width","0px")
+               .css("background-color","transparent")
+               .attr("readonly","readonly");});
     });
 
 </script>
