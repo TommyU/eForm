@@ -11,4 +11,4 @@ class request_formForm(ModelForm):
         model = request_form
 
 saturday_off_requestFormSet =inlineformset_factory(request_form,saturday_off_request,extra=1)
-
+acts_of_requestFormSet =inlineformset_factory(request_form,acts_of_request,extra=1)

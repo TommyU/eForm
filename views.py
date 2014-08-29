@@ -145,18 +145,23 @@ class requestCreate(CreateView):
     def get_context_data(self, **kwargs):
         context = super(requestCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            context.update(saturdays = saturday_off_requestFormSet(self.request.POST))
+            context.update(saturdays = saturday_off_requestFormSet(self.request.POST),
+                           acts = acts_of_requestFormSet(self.request.POST))
         else:
-            context.update(saturdays = saturday_off_requestFormSet())
+            context.update(saturdays = saturday_off_requestFormSet(),
+                           acts = acts_of_requestFormSet())
         return context
 
     def form_valid(self, form):
         #super(requestCreate,self).form_valid(form)
         saturdays = saturday_off_requestFormSet(self.request.POST)
-        if saturdays.is_valid():
+        acts = acts_of_requestFormSet(self.request.POST)
+        if saturdays.is_valid() and acts.is_valid():
             self.object = form.save()
             saturdays.instance= self.object
+            acts.instance = self.object
             saturdays.save()
+            acts.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data())
@@ -177,17 +182,22 @@ class requestUpdate(UpdateView):
         context = super(requestUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
             context.update(saturdays = saturday_off_requestFormSet(self.request.POST))
+            context.update(acts = acts_of_requestFormSet(self.request.POST))
         else:
             context.update(saturdays = saturday_off_requestFormSet(instance=request_form.objects.get(pk = self.kwargs.get('pk',False))))
+            context.update(acts = acts_of_requestFormSet(instance=request_form.objects.get(pk = self.kwargs.get('pk',False))))
         return context
 
     def form_valid(self, form):
         #super(requestCreate,self).form_valid(form)
-        saturdays = saturday_off_requestFormSet(self.request.POST,instance = self.object)
-        if saturdays.is_valid():
+        saturdays = saturday_off_requestFormSet(self.request.POST,instance = self.object)#,instance = self.object
+        acts = acts_of_requestFormSet(self.request.POST,instance = self.object)
+        if saturdays.is_valid() and acts.is_valid():
             self.object = form.save()
             saturdays.instance= self.object
             saturdays.save()
+            acts.instance= self.object
+            acts.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data())

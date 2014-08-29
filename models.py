@@ -83,5 +83,10 @@ class saturday_off_request(models.Model):
     is_off = models.BooleanField(default=False,verbose_name=_('off'))
     day = models.DateField(_('day'))
 
+class acts_of_request(models.Model):
+    request = models.ForeignKey(request_form)
+    actor = models.ForeignKey(supervisor_list)
+    duty = models.TextField()
+
 #class leave_request(models.Model):
 
